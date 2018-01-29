@@ -130,4 +130,15 @@
         </repository>
     </repositories>
 
+    <distributionManagement>
+        <repository>
+            <id>ziroom</id>
+            <url>http://mvn.ziroom.com/ams-release</url>
+        </repository>
+        <snapshotRepository>
+            <id>ziroom</id>
+            <url>http://mvn.ziroom.com/ams-snapshot</url>
+        </snapshotRepository>
+    </distributionManagement>
+
 </project>
