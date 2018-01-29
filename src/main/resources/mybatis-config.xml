@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE configuration
+        PUBLIC "-//ibatis.apache.org//DTD Config 3.0//EN"
+        "http://ibatis.apache.org/dtd/ibatis-3-config.dtd">
+<configuration>
+    <properties>
+        <!-- 数据库方言设置目前只支持mysql和oracle，mysql为默认配置可以不写 -->
+        <property name="dialect" value="mysql"/>
+        <!-- 翻页插件sqlid过滤正则，目前不支持修改 -->
+        <property name="pageSqlId" value=".*Page$"/>
+    </properties>
+    <settings>
+        <!--<setting name="logImpl" value="STDOUT_LOGGING" />-->
+        <setting name="cacheEnabled" value="false"/>
+        <setting name="lazyLoadingEnabled" value="false"/>
+        <setting name="aggressiveLazyLoading" value="false"/>
+        <setting name="mapUnderscoreToCamelCase" value="false"/>
+        <setting name="defaultStatementTimeout" value="25"/>
+    </settings>
+</configuration>
