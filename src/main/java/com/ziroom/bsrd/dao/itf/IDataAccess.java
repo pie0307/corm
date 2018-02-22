@@ -1,10 +1,10 @@
 package com.ziroom.bsrd.dao.itf;
 
 import com.ziroom.bsrd.basic.exception.BusinessException;
+import com.ziroom.bsrd.basic.vo.Condition;
+import com.ziroom.bsrd.basic.vo.OrderBy;
+import com.ziroom.bsrd.basic.vo.Page;
 import com.ziroom.bsrd.basic.vo.SuperModel;
-import com.ziroom.bsrd.corm.opt.Condition;
-import com.ziroom.bsrd.corm.opt.OrderBy;
-import com.ziroom.bsrd.corm.opt.Page;
 
 import java.io.Serializable;
 import java.util.List;
