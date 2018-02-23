@@ -3,7 +3,7 @@ package com.ziroom.bsrd.dao.configuration;
 import com.ziroom.bsrd.basic.constant.ErrorCode;
 import com.ziroom.bsrd.basic.exception.BusinessException;
 import com.ziroom.bsrd.basic.vo.SuperModel;
-import com.ziroom.bsrd.basic.vo.SuperVO;
+import com.ziroom.bsrd.basic.vo.SuperModel;
 import com.ziroom.bsrd.core.ApplicationEnvironment;
 import com.ziroom.bsrd.dao.itf.IFillingDefault;
 import org.apache.commons.lang3.StringUtils;
@@ -18,9 +18,8 @@ public class DefaultFilling implements IFillingDefault {
 
 
     @Override
-    public void filling(String type, SuperVO superVO) {
-        if (superVO instanceof SuperModel) {
-            SuperModel superModel = (SuperModel) superVO;
+    public void filling(String type, SuperModel superModel) {
+        if (superModel instanceof SuperModel) {
             if (INSERT.equals(type)) {
                 superModel.setCreateCode(ApplicationEnvironment.getEmpCode());
                 superModel.setCreateName(ApplicationEnvironment.getUserName());
@@ -42,9 +41,9 @@ public class DefaultFilling implements IFillingDefault {
                 superModel.setLastModifyTime(new Date());
             }
         } else {
-            superVO.setIsDel(0);
-            if (StringUtils.isBlank(superVO.getCityCode())) {
-                superVO.setCityCode(ApplicationEnvironment.getCityCode());
+            superModel.setIsDel(0);
+            if (StringUtils.isBlank(superModel.getCityCode())) {
+                superModel.setCityCode(ApplicationEnvironment.getCityCode());
             }
         }
 
