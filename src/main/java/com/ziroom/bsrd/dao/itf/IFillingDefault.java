@@ -1,6 +1,6 @@
 package com.ziroom.bsrd.dao.itf;
 
-import com.ziroom.bsrd.basic.vo.SuperModel;
+import com.ziroom.bsrd.basic.vo.SuperVO;
 
 /**
  * @author chengys4
@@ -10,5 +10,5 @@ public interface IFillingDefault {
     public static final String INSERT = "insert";
     public static final String UPDATE = "update";
 
-    void filling(String type, SuperModel superModel);
+    void filling(String type, SuperVO superVO);
 }

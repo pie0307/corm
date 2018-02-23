@@ -3,7 +3,7 @@ package com.ziroom.bsrd.dao.util;
 
 import com.ziroom.bsrd.basic.BeanConvertor;
 import com.ziroom.bsrd.basic.BeanHelper;
-import com.ziroom.bsrd.basic.vo.SuperModel;
+import com.ziroom.bsrd.basic.vo.SuperVO;
 import org.apache.commons.beanutils.Converter;
 
 import java.io.BufferedReader;
@@ -165,7 +165,7 @@ public class ProcessorUtils {
 
         Object bean = newInstance(type);
         boolean isSuperBean = false;
-        if (bean instanceof SuperModel) {
+        if (bean instanceof SuperVO) {
             isSuperBean = true;
         }
         ResultSetMetaData metaData = resultSet.getMetaData();

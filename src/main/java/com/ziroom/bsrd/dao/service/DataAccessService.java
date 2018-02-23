@@ -68,72 +68,72 @@ public class DataAccessService implements IDataAccess {
     }
 
     @Override
-    public SuperModel save(SuperModel superModel) throws BusinessException {
-        Preconditions.checkNotNull(superModel, "插入实体不能为空");
-        if (Predef.toLong(superModel.getId()) > 0) {
-            update(superModel);
-            return superModel;
+    public SuperVO save(SuperVO superVO) throws BusinessException {
+        Preconditions.checkNotNull(superVO, "插入实体不能为空");
+        if (Predef.toLong(superVO.getId()) > 0) {
+            update(superVO);
+            return superVO;
         } else {
-            return insert(superModel);
+            return insert(superVO);
         }
     }
 
     @Override
-    public SuperModel insert(SuperModel superModel) throws BusinessException {
-        Preconditions.checkNotNull(superModel, "插入实体不能为空");
-        filling(IFillingDefault.INSERT, superModel);
-        validate(superModel);
-        cService.save(superModel);
-        return superModel;
+    public SuperVO insert(SuperVO superVO) throws BusinessException {
+        Preconditions.checkNotNull(superVO, "插入实体不能为空");
+        filling(IFillingDefault.INSERT, superVO);
+        validate(superVO);
+        cService.save(superVO);
+        return superVO;
     }
 
-    private void filling(String type, SuperModel superModel) {
-        fillingDefault.filling(type, superModel);
+    private void filling(String type, SuperVO superVO) {
+        fillingDefault.filling(type, superVO);
     }
 
     @Override
-    public List<? extends SuperModel> insert(List<? extends SuperModel> superModels) throws BusinessException {
-        Preconditions.checkNotNull(superModels, "插入实体不能为空");
-        for (SuperModel superModel : superModels) {
-            insert(superModel);
+    public List<? extends SuperVO> insert(List<? extends SuperVO> superVOs) throws BusinessException {
+        Preconditions.checkNotNull(superVOs, "插入实体不能为空");
+        for (SuperVO superVO : superVOs) {
+            insert(superVO);
         }
-        return superModels;
+        return superVOs;
     }
 
     @Override
-    public SuperModel[] insert(SuperModel[] superModels) throws BusinessException {
-        Preconditions.checkNotNull(superModels, "插入实体不能为空");
-        for (SuperModel superModel : superModels) {
-            insert(superModel);
+    public SuperVO[] insert(SuperVO[] superVOs) throws BusinessException {
+        Preconditions.checkNotNull(superVOs, "插入实体不能为空");
+        for (SuperVO superVO : superVOs) {
+            insert(superVO);
         }
-        return superModels;
+        return superVOs;
     }
 
     @Override
-    public int update(SuperModel superModel) throws BusinessException {
-        Preconditions.checkNotNull(superModel, "更新实体类不能为空");
-        filling(IFillingDefault.UPDATE, superModel);
-        validate(superModel);
-        return cService.update(superModel);
+    public int update(SuperVO superVO) throws BusinessException {
+        Preconditions.checkNotNull(superVO, "更新实体类不能为空");
+        filling(IFillingDefault.UPDATE, superVO);
+        validate(superVO);
+        return cService.update(superVO);
     }
 
-    private void validate(SuperModel superModel) {
+    private void validate(SuperVO superVO) {
         if (validate != null) {
-            validate.validate(superModel);
+            validate.validate(superVO);
         }
     }
 
     @Override
-    public int update(SuperModel superModel, String[] fields) throws BusinessException {
+    public int update(SuperVO superVO, String[] fields) throws BusinessException {
         Preconditions.checkNotNull(fields, "更新字段不能为空");
-        Preconditions.checkNotNull(superModel, "更新实体类不能为空");
-        return update(new SuperModel[]{superModel}, fields)[0];
+        Preconditions.checkNotNull(superVO, "更新实体类不能为空");
+        return update(new SuperVO[]{superVO}, fields)[0];
     }
 
-    private Object getValue(SuperModel superModel, String field) {
+    private Object getValue(SuperVO superVO, String field) {
         Object vaule = null;
         try {
-            vaule = BeanHelper.getProperty(superModel, field);
+            vaule = BeanHelper.getProperty(superVO, field);
         } catch (Exception e) {
             throw new DaoException("", e);
         }
@@ -141,7 +141,7 @@ public class DataAccessService implements IDataAccess {
     }
 
     @Override
-    public int[] update(List<? extends SuperModel> superVOs) throws BusinessException {
+    public int[] update(List<? extends SuperVO> superVOs) throws BusinessException {
         Preconditions.checkNotNull(superVOs, "更新实体类不能为空");
         int[] r = new int[superVOs.size()];
         for (int i = 0; i < superVOs.size(); i++) {
@@ -151,96 +151,114 @@ public class DataAccessService implements IDataAccess {
     }
 
     @Override
-    public int[] update(List<? extends SuperModel> vos, String[] fields) throws BusinessException {
+    public int[] update(List<? extends SuperVO> vos, String[] fields) throws BusinessException {
         Preconditions.checkNotNull(fields, "更新字段不能为空");
         Preconditions.checkNotNull(vos, "更新实体类不能为空");
-        return update(vos.toArray(new SuperModel[vos.size()]), fields);
+        return update(vos.toArray(new SuperVO[vos.size()]), fields);
     }
 
     @Override
-    public int[] update(SuperModel[] superVOs, String[] fields) throws BusinessException {
+    public int[] update(SuperVO[] superVOs, String[] fields) throws BusinessException {
         Preconditions.checkNotNull(fields, "更新字段不能为空");
         Preconditions.checkNotNull(superVOs, "更新实体类不能为空");
         int[] r = new int[superVOs.length];
         for (int i = 0; i < superVOs.length; i++) {
-            SuperModel superModel = superVOs[i];
-            if (StringUtils.isBlank(superModel.getCityCode())) {
+            SuperVO superVO = superVOs[i];
+            if (StringUtils.isBlank(superVO.getCityCode())) {
                 throw new BusinessException(ErrorCode.PARAM_REQUIRED, "cityCode is null");
             }
-            validate(superModel);
-            Update updateA = Corm.update(superModel.getClass());
-            AppointUpdate appointUpdate = updateA.field(Field.of(fields[0]), getValue(superModel, fields[0]));
+            validate(superVO);
+            Update updateA = Corm.update(superVO.getClass());
+            AppointUpdate appointUpdate = updateA.field(Field.of(fields[0]), getValue(superVO, fields[0]));
             if (fields.length > 1) {
                 for (int j = 1; j < fields.length; j++) {
-                    appointUpdate = appointUpdate.field(Field.of(fields[j]), getValue(superModel, fields[j]));
+                    appointUpdate = appointUpdate.field(Field.of(fields[j]), getValue(superVO, fields[j]));
                 }
             }
             if(fillingDefault!=null){
-                filling(IFillingDefault.UPDATE,superModel);
+                filling(IFillingDefault.UPDATE, superVO);
             }
-            appointUpdate = appointUpdate.field(Field.of("lastModifyCode"), superModel.getLastModifyCode());
-            appointUpdate = appointUpdate.field(Field.of("lastModifyName"), superModel.getLastModifyName());
-            appointUpdate = appointUpdate.field(Field.of("lastModifyTime"), superModel.getLastModifyTime());
-            r[i] = appointUpdate.where(Condition.eq("id", getValue(superModel, "id"))).exec();
+            if (superVO instanceof SuperModel) {
+                SuperModel superModel = (SuperModel) superVO;
+                appointUpdate = appointUpdate.field(Field.of("lastModifyCode"), superModel.getLastModifyCode());
+                appointUpdate = appointUpdate.field(Field.of("lastModifyName"), superModel.getLastModifyName());
+                appointUpdate = appointUpdate.field(Field.of("lastModifyTime"), superModel.getLastModifyTime());
+            }
+            r[i] = appointUpdate.where(Condition.eq("id", getValue(superVO, "id"))).exec();
         }
         return r;
     }
 
     @Override
-    public int updateCas(Class<? extends SuperModel> className, String targetFile, Object targetValue, Object oldValue, Condition condition) throws BusinessException {
+    public int updateCas(Class<? extends SuperVO> className, String targetFile, Object targetValue, Object oldValue, Condition condition) throws BusinessException {
         Preconditions.checkNotNull(condition, "更新条件不能为空");
         Preconditions.checkNotNull(targetFile, "更新字段不能为空");
         Preconditions.checkNotNull(targetValue, "更新值不能为空");
-        SuperModel superModel = new SuperModel();
+        SuperVO superVO = new SuperVO();
         if(fillingDefault!=null){
-            filling(IFillingDefault.UPDATE,superModel);
+            filling(IFillingDefault.UPDATE, superVO);
         }
-        AppointUpdate<? extends SuperModel> field = Corm.update(className)
-                .field(Field.of(targetFile), targetValue)
-                .field(Field.of("lastModifyCode"), superModel.getLastModifyCode())
-                .field(Field.of("lastModifyName"), superModel.getLastModifyName())
-                .field(Field.of("lastModifyTime"), superModel.getLastModifyTime());
-        field.where(condition).and(Condition.eq(targetFile, oldValue));
-        return field.exec();
+        AppointUpdate<? extends SuperVO> appointUpdate = Corm.update(className)
+                .field(Field.of(targetFile), targetValue);
+
+        if (superVO instanceof SuperModel) {
+            SuperModel superModel = (SuperModel) superVO;
+            appointUpdate = appointUpdate.field(Field.of("lastModifyCode"), superModel.getLastModifyCode());
+            appointUpdate = appointUpdate.field(Field.of("lastModifyName"), superModel.getLastModifyName());
+            appointUpdate = appointUpdate.field(Field.of("lastModifyTime"), superModel.getLastModifyTime());
+        }
+        appointUpdate.where(condition).and(Condition.eq(targetFile, oldValue));
+        return appointUpdate.exec();
     }
 
     @Override
-    public int update(Class<? extends SuperModel> className, String targetFile, Object targetValue, List<Condition> conditions) throws BusinessException {
+    public int update(Class<? extends SuperVO> className, String targetFile, Object targetValue, List<Condition> conditions) throws BusinessException {
         Preconditions.checkNotNull(conditions, "更新条件不能为空");
         Preconditions.checkNotNull(targetFile, "更新字段不能为空");
         Preconditions.checkNotNull(targetValue, "更新值不能为空");
-        SuperModel superModel = new SuperModel();
+        SuperVO superVO = new SuperVO();
         if(fillingDefault!=null){
-            filling(IFillingDefault.UPDATE,superModel);
+            filling(IFillingDefault.UPDATE, superVO);
         }
-        AppointUpdate<? extends SuperModel> field = Corm.update(className)
-                .field(Field.of(targetFile), targetValue)
-                .field(Field.of("lastModifyCode"), superModel.getLastModifyCode())
-                .field(Field.of("lastModifyName"), superModel.getLastModifyName())
-                .field(Field.of("lastModifyTime"), superModel.getLastModifyTime());
-        field.where(conditions);
-        return field.exec();
+        AppointUpdate<? extends SuperVO> appointUpdate = Corm.update(className)
+                .field(Field.of(targetFile), targetValue);
+
+        if (superVO instanceof SuperModel) {
+            SuperModel superModel = (SuperModel) superVO;
+            appointUpdate = appointUpdate.field(Field.of("lastModifyCode"), superModel.getLastModifyCode());
+            appointUpdate = appointUpdate.field(Field.of("lastModifyName"), superModel.getLastModifyName());
+            appointUpdate = appointUpdate.field(Field.of("lastModifyTime"), superModel.getLastModifyTime());
+        }
+
+        appointUpdate.where(conditions);
+        return appointUpdate.exec();
     }
 
     @Override
-    public int update(Class<? extends SuperModel> className, String[] targetFields, Object[] targetValues, List<Condition> conditions) throws BusinessException {
+    public int update(Class<? extends SuperVO> className, String[] targetFields, Object[] targetValues, List<Condition> conditions) throws BusinessException {
         Preconditions.checkNotNull(conditions, "更新条件不能为空");
         Preconditions.checkNotNull(targetFields, "更新字段不能为空");
         Preconditions.checkNotNull(targetValues, "更新值不能为空");
         Preconditions.checkArgument(targetFields.length == targetValues.length, "字段个数和值个数不一致");
-        SuperModel superModel = new SuperModel();
+        SuperVO superVO = new SuperVO();
         if(fillingDefault!=null){
-            filling(IFillingDefault.UPDATE,superModel);
+            filling(IFillingDefault.UPDATE, superVO);
         }
-        AppointUpdate<? extends SuperModel> field = Corm.update(className)
-                .field(Field.of("lastModifyCode"), superModel.getLastModifyCode())
-                .field(Field.of("lastModifyName"), superModel.getLastModifyName())
-                .field(Field.of("lastModifyTime"), superModel.getLastModifyTime());
+        AppointUpdate<? extends SuperVO> appointUpdate = Corm.update(className)
+                .field(Field.of("isDel"), superVO.getIsDel());
+
+        if (superVO instanceof SuperModel) {
+            SuperModel superModel = (SuperModel) superVO;
+            appointUpdate = appointUpdate.field(Field.of("lastModifyCode"), superModel.getLastModifyCode());
+            appointUpdate = appointUpdate.field(Field.of("lastModifyName"), superModel.getLastModifyName());
+            appointUpdate = appointUpdate.field(Field.of("lastModifyTime"), superModel.getLastModifyTime());
+        }
+
         for (int i = 0; i < targetFields.length; i++) {
-            field.field(Field.of(targetFields[i]), targetValues[i]);
+            appointUpdate.field(Field.of(targetFields[i]), targetValues[i]);
         }
-        field.where(conditions);
-        return field.exec();
+        appointUpdate.where(conditions);
+        return appointUpdate.exec();
     }
 
     @Override
@@ -249,13 +267,13 @@ public class DataAccessService implements IDataAccess {
     }
 
     @Override
-    public <T extends SuperModel> T queryByPK(Class<T> className, Serializable pk) throws BusinessException {
+    public <T extends SuperVO> T queryByPK(Class<T> className, Serializable pk) throws BusinessException {
         Preconditions.checkNotNull(pk, "主键不能为空");
         return cService.find(className, (Long) pk);
     }
 
     @Override
-    public <T extends SuperModel> Page<T> queryByPage(Class<T> clazz, List<Condition> conditions, List<OrderBy> orderBys, int pn, int pz) throws BusinessException {
+    public <T extends SuperVO> Page<T> queryByPage(Class<T> clazz, List<Condition> conditions, List<OrderBy> orderBys, int pn, int pz) throws BusinessException {
         if (orderBys == null) {
             orderBys = new ArrayList<>();
             orderBys.add(OrderBy.desc("id"));
@@ -270,32 +288,32 @@ public class DataAccessService implements IDataAccess {
 
 
     @Override
-    public <T extends SuperModel> Page<T> queryByPage(Class<T> clazz, List<Condition> conditions, int pn, int pz) throws BusinessException {
+    public <T extends SuperVO> Page<T> queryByPage(Class<T> clazz, List<Condition> conditions, int pn, int pz) throws BusinessException {
         return queryByPage(clazz, parseCondition(conditions), Lists.newArrayList(OrderBy.desc("id")), pn, pz);
     }
 
     @Override
-    public <T extends SuperModel> List<T> queryByClause(Class<T> className, List<Condition> conditionList) throws BusinessException {
+    public <T extends SuperVO> List<T> queryByClause(Class<T> className, List<Condition> conditionList) throws BusinessException {
         conditionList = parseCondition(conditionList);
         return cService.findList(className, conditionList.toArray(new Condition[conditionList.size()]));
     }
 
     @Override
-    public <T extends SuperModel> List<T> queryByClause(Class<T> className, String[] selectFields, List<Condition> conditionList) throws BusinessException {
+    public <T extends SuperVO> List<T> queryByClause(Class<T> className, String[] selectFields, List<Condition> conditionList) throws BusinessException {
 
         return queryByClause(className, selectFields, conditionList, null);
     }
 
     @Override
-    public <T extends SuperModel> List<T> queryByClause(Class<T> className, String[] selectFields, List<Condition> conditionList, List<OrderBy> orderByList) throws BusinessException {
+    public <T extends SuperVO> List<T> queryByClause(Class<T> className, String[] selectFields, List<Condition> conditionList, List<OrderBy> orderByList) throws BusinessException {
         List<Map<String, Object>> data = queryMapByClause(className, selectFields, conditionList, orderByList);
         if (Predef.size(data) > 0) {
-            List<T> superModels = new ArrayList<>();
+            List<T> superVOs = new ArrayList<>();
             for (Map<String, Object> item : data) {
-                T superModel = BeanUtils.mapToBean(item, className);
-                superModels.add(superModel);
+                T superVO = BeanUtils.mapToBean(item, className);
+                superVOs.add(superVO);
             }
-            return superModels;
+            return superVOs;
         }
         return new ArrayList<>();
     }
@@ -332,27 +350,27 @@ public class DataAccessService implements IDataAccess {
     }
 
     @Override
-    public <T extends SuperModel> List<T> queryByClause(Class<T> className, Condition... conditions) throws BusinessException {
+    public <T extends SuperVO> List<T> queryByClause(Class<T> className, Condition... conditions) throws BusinessException {
         return cService.findList(className, parseCondition(conditions));
     }
 
     @Override
-    public <T extends SuperModel> List<T> queryByIds(Class<T> clazz, List<Long> ids) {
+    public <T extends SuperVO> List<T> queryByIds(Class<T> clazz, List<Long> ids) {
         return cService.findList(clazz, ids);
     }
 
     @Override
-    public <T extends SuperModel> List<T> queryByIds(Class<T> clazz, String[] selectFields, List<Long> ids) {
+    public <T extends SuperVO> List<T> queryByIds(Class<T> clazz, String[] selectFields, List<Long> ids) {
         return queryByClause(clazz, selectFields, Lists.newArrayList(Condition.in(IdEntity.ID_PN, ids)));
     }
 
     @Override
-    public <T extends SuperModel> T queryOne(Class<T> classz, Condition... condition) {
+    public <T extends SuperVO> T queryOne(Class<T> classz, Condition... condition) {
         return cService.find(classz, parseCondition(condition));
     }
 
     @Override
-    public <T extends SuperModel> T queryOne(Class<T> clazz, String[] selectFields, Condition... condition) throws BusinessException {
+    public <T extends SuperVO> T queryOne(Class<T> clazz, String[] selectFields, Condition... condition) throws BusinessException {
         if (selectFields == null) {
             List<T> data = queryByClause(clazz, condition);
             if (Predef.size(data) > 0) {
@@ -361,20 +379,20 @@ public class DataAccessService implements IDataAccess {
         } else {
             List<Map<String, Object>> data = queryMapByClause(clazz, selectFields, Arrays.asList(condition), null);
             if (Predef.size(data) > 0) {
-                T superModel = BeanUtils.mapToBean(data.get(0), clazz);
-                return superModel;
+                T superVO = BeanUtils.mapToBean(data.get(0), clazz);
+                return superVO;
             }
         }
         return null;
     }
 
     @Override
-    public <T extends SuperModel> T queryOne(Class<T> clazz, List<Condition> conditions) throws BusinessException {
+    public <T extends SuperVO> T queryOne(Class<T> clazz, List<Condition> conditions) throws BusinessException {
         return queryOne(clazz, null, conditions.toArray(new Condition[conditions.size()]));
     }
 
     @Override
-    public <T extends SuperModel> T queryOne(Class<T> clazz, String[] selectFields, List<Condition> conditions) throws BusinessException {
+    public <T extends SuperVO> T queryOne(Class<T> clazz, String[] selectFields, List<Condition> conditions) throws BusinessException {
         return queryOne(clazz, selectFields, conditions.toArray(new Condition[conditions.size()]));
     }
 
@@ -420,7 +438,7 @@ public class DataAccessService implements IDataAccess {
     }
 
     @Override
-    public <T extends SuperModel> List<T> queryByClause(Class<T> className, List<Condition> conditions, List<OrderBy> orderBy) {
+    public <T extends SuperVO> List<T> queryByClause(Class<T> className, List<Condition> conditions, List<OrderBy> orderBy) {
         return cService.findList(className, parseCondition(conditions), orderBy);
     }
 
