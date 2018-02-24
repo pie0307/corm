@@ -179,7 +179,6 @@ public class DataAccessService implements IDataAccess {
                 filling(IFillingDefault.UPDATE, superModel);
             }
             if (superModel instanceof SuperModel) {
-                SuperModel superModel = (SuperModel) superModel;
                 appointUpdate = appointUpdate.field(Field.of("lastModifyCode"), superModel.getLastModifyCode());
                 appointUpdate = appointUpdate.field(Field.of("lastModifyName"), superModel.getLastModifyName());
                 appointUpdate = appointUpdate.field(Field.of("lastModifyTime"), superModel.getLastModifyTime());
@@ -202,7 +201,6 @@ public class DataAccessService implements IDataAccess {
                 .field(Field.of(targetFile), targetValue);
 
         if (superModel instanceof SuperModel) {
-            SuperModel superModel = (SuperModel) superModel;
             appointUpdate = appointUpdate.field(Field.of("lastModifyCode"), superModel.getLastModifyCode());
             appointUpdate = appointUpdate.field(Field.of("lastModifyName"), superModel.getLastModifyName());
             appointUpdate = appointUpdate.field(Field.of("lastModifyTime"), superModel.getLastModifyTime());
@@ -224,7 +222,6 @@ public class DataAccessService implements IDataAccess {
                 .field(Field.of(targetFile), targetValue);
 
         if (superModel instanceof SuperModel) {
-            SuperModel superModel = (SuperModel) superModel;
             appointUpdate = appointUpdate.field(Field.of("lastModifyCode"), superModel.getLastModifyCode());
             appointUpdate = appointUpdate.field(Field.of("lastModifyName"), superModel.getLastModifyName());
             appointUpdate = appointUpdate.field(Field.of("lastModifyTime"), superModel.getLastModifyTime());
@@ -248,7 +245,6 @@ public class DataAccessService implements IDataAccess {
                 .field(Field.of("isDel"), superModel.getIsDel());
 
         if (superModel instanceof SuperModel) {
-            SuperModel superModel = (SuperModel) superModel;
             appointUpdate = appointUpdate.field(Field.of("lastModifyCode"), superModel.getLastModifyCode());
             appointUpdate = appointUpdate.field(Field.of("lastModifyName"), superModel.getLastModifyName());
             appointUpdate = appointUpdate.field(Field.of("lastModifyTime"), superModel.getLastModifyTime());
