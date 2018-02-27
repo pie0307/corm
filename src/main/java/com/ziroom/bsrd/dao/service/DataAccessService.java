@@ -269,6 +269,12 @@ public class DataAccessService implements IDataAccess {
     }
 
     @Override
+    public <T extends SuperModel> T queryById(Class<T> className, long pk) throws BusinessException {
+        Preconditions.checkNotNull(pk, "主键不能为空");
+        return cService.find(className, pk);
+    }
+
+    @Override
     public <T extends SuperModel> Page<T> queryByPage(Class<T> clazz, List<Condition> conditions, List<OrderBy> orderBys, int pn, int pz) throws BusinessException {
         if (orderBys == null) {
             orderBys = new ArrayList<>();

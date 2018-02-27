@@ -2,7 +2,7 @@
 
 自定义jdbc操作的starter
 
-
+## 如果接入
 1. 添加maven依赖
 
     ```
@@ -28,4 +28,11 @@ spring:
   databaseName: 数据库名
   username: 用户
   password: 密码
+ ```
+
+ ## 如果使用
+ 1.Service注入注解
+ ```
+    @Autowired
+    private IDataAccess dataAccess;
  ```

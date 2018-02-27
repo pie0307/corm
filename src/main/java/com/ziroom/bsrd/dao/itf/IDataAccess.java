@@ -47,6 +47,8 @@ public interface IDataAccess {
 
     <T extends SuperModel> T queryByPK(Class<T> className, Serializable pk) throws BusinessException;
 
+    <T extends SuperModel> T queryById(Class<T> className, long pk) throws BusinessException;
+
     <T extends SuperModel> Page<T> queryByPage(Class<T> clazz, List<Condition> conditions, List<OrderBy> orderBys, int pn, int pz) throws BusinessException;
 
     Page<Map<String, Object>> queryMapByPage(Class clazz, String[] selectFields, List<Condition> conditions, List<OrderBy> orderBys, int pn, int pz) throws BusinessException;
