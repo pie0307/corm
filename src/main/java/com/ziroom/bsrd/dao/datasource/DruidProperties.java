@@ -49,11 +49,11 @@ public class DruidProperties {
 
     private Boolean testWhileIdle = true;
 
-    private Boolean testOnBorrow = false;
+    private Boolean testOnBorrow = true;
 
     private Boolean testOnReturn = false;
 
-    private Boolean poolPreparedStatements = true;
+    private Boolean poolPreparedStatements = false;
 
     private Integer maxPoolPreparedStatementPerConnectionSize = 20;
 
@@ -63,7 +63,7 @@ public class DruidProperties {
 
         if ("mysql".equals(type)) {
             if (StringUtils.isBlank(url)) {
-                url = "jdbc:mysql://" + domian + "/" + databaseName + "?autoReconnect=true&useUnicode=true&characterEncoding=utf8&zeroDateTimeBehavior=convertToNull";
+                url = "jdbc:mysql://" + domian + "/" + databaseName + "?useUnicode=true&characterEncoding=utf8&zeroDateTimeBehavior=convertToNull";
             }
         }
 
