@@ -431,6 +431,11 @@ public class DataAccessService implements IDataAccess {
     }
 
     @Override
+    public List<Map<String, Object>> queryList(String sql, Object... params) throws BusinessException {
+        return jdbcTemplate.queryForList(sql, params);
+    }
+
+    @Override
     public <T> T queryOne(String sql, Class<T> clazz, Object... params) throws BusinessException {
         List<T> data = queryList(sql, clazz, params);
         if (Predef.size(data) > 0) {

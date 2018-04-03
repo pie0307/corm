@@ -88,6 +88,8 @@ public interface IDataAccess {
 
     <T> List<T> queryList(String sql, Class<T> clazz, Object... params) throws BusinessException;
 
+    List<Map<String, Object>> queryList(String sql, Object... params) throws BusinessException;
+
     <T> T queryOne(String sql, Class<T> clazz, Object... params) throws BusinessException;
 
     int delete(Class clazz, Condition... condition);
