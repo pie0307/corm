@@ -28,6 +28,8 @@ public interface IDataAccess {
 
     int update(final SuperModel superModel) throws BusinessException;
 
+    int update(final SuperModel superModel, boolean isUpdateInfo) throws BusinessException;
+
     int update(final SuperModel superModel, String[] updateFields) throws BusinessException;
 
     int[] update(final List<? extends SuperModel> superModels) throws BusinessException;

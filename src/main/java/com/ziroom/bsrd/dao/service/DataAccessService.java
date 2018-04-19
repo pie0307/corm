@@ -117,6 +117,22 @@ public class DataAccessService implements IDataAccess {
         return cService.update(superModel);
     }
 
+    /**
+     * Author : liuby
+     * Description : isUpdateFlag 是否保存修改人、修改时间 true是 false否
+     * Date : Created in 2018/4/19 16:36
+     */
+    @Override
+    public int update(SuperModel superModel, boolean isUpdateFlag) throws BusinessException {
+        Preconditions.checkNotNull(superModel, "更新实体类不能为空");
+        Preconditions.checkNotNull(isUpdateFlag, "是否记录修改人标示不能为空");
+        if (isUpdateFlag) {
+            return update(superModel);
+        }
+        validate(superModel);
+        return cService.update(superModel);
+    }
+
     private void validate(SuperModel superModel) {
         if (validate != null) {
             validate.validate(superModel);
