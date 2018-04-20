@@ -143,11 +143,23 @@ public class DataAccessService implements IDataAccess {
     public int update(SuperModel superModel, String[] fields) throws BusinessException {
         Preconditions.checkNotNull(fields, "更新字段不能为空");
         Preconditions.checkNotNull(superModel, "更新实体类不能为空");
-        return update(new SuperModel[]{superModel}, fields)[0];
+        return update(new SuperModel[]{superModel}, fields, true)[0];
+    }
+
+    /**
+     * Author : liuby
+     * Description : isUpdateFlag 是否保存修改人、修改时间 true是 false否
+     * Date : Created in 2018/4/19 16:36
+     */
+    @Override
+    public int update(SuperModel superModel, String[] fields, boolean isUpdateFlag) throws BusinessException {
+        Preconditions.checkNotNull(fields, "更新字段不能为空");
+        Preconditions.checkNotNull(superModel, "更新实体类不能为空");
+        return update(new SuperModel[]{superModel}, fields, isUpdateFlag)[0];
     }
 
     private Object getValue(SuperModel superModel, String field) {
-        Object vaule = null;
+        Object vaule;
         try {
             vaule = BeanHelper.getProperty(superModel, field);
         } catch (Exception e) {
@@ -170,11 +182,11 @@ public class DataAccessService implements IDataAccess {
     public int[] update(List<? extends SuperModel> vos, String[] fields) throws BusinessException {
         Preconditions.checkNotNull(fields, "更新字段不能为空");
         Preconditions.checkNotNull(vos, "更新实体类不能为空");
-        return update(vos.toArray(new SuperModel[vos.size()]), fields);
+        return update(vos.toArray(new SuperModel[vos.size()]), fields, true);
     }
 
     @Override
-    public int[] update(SuperModel[] superModels, String[] fields) throws BusinessException {
+    public int[] update(SuperModel[] superModels, String[] fields, boolean isUpdateFlag) throws BusinessException {
         Preconditions.checkNotNull(fields, "更新字段不能为空");
         Preconditions.checkNotNull(superModels, "更新实体类不能为空");
         int[] r = new int[superModels.length];
@@ -191,14 +203,18 @@ public class DataAccessService implements IDataAccess {
                     appointUpdate = appointUpdate.field(Field.of(fields[j]), getValue(superModel, fields[j]));
                 }
             }
-            if(fillingDefault!=null){
-                filling(IFillingDefault.UPDATE, superModel);
+
+            if (isUpdateFlag) {
+                if (fillingDefault != null) {
+                    filling(IFillingDefault.UPDATE, superModel);
+                }
+                if (superModel instanceof SuperModel) {
+                    appointUpdate = appointUpdate.field(Field.of("lastModifyCode"), superModel.getLastModifyCode());
+                    appointUpdate = appointUpdate.field(Field.of("lastModifyName"), superModel.getLastModifyName());
+                    appointUpdate = appointUpdate.field(Field.of("lastModifyTime"), superModel.getLastModifyTime());
+                }
             }
-            if (superModel instanceof SuperModel) {
-                appointUpdate = appointUpdate.field(Field.of("lastModifyCode"), superModel.getLastModifyCode());
-                appointUpdate = appointUpdate.field(Field.of("lastModifyName"), superModel.getLastModifyName());
-                appointUpdate = appointUpdate.field(Field.of("lastModifyTime"), superModel.getLastModifyTime());
-            }
+
             r[i] = appointUpdate.where(Condition.eq("id", getValue(superModel, "id"))).exec();
         }
         return r;

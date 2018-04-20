@@ -32,11 +32,13 @@ public interface IDataAccess {
 
     int update(final SuperModel superModel, String[] updateFields) throws BusinessException;
 
+    int update(final SuperModel superModel, String[] updateFields, boolean isUpdateFlag) throws BusinessException;
+
     int[] update(final List<? extends SuperModel> superModels) throws BusinessException;
 
     int[] update(final List<? extends SuperModel> superModels, String[] updateFields) throws BusinessException;
 
-    int[] update(final SuperModel[] superModels, String[] fields) throws BusinessException;
+    int[] update(final SuperModel[] superModels, String[] fields, boolean isUpdateFlag) throws BusinessException;
 
     int updateCas(Class<? extends SuperModel> className, String targetFile, Object targetValue, Object oldValue, Condition condition) throws BusinessException;
 
