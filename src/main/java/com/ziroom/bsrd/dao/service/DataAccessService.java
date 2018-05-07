@@ -383,6 +383,31 @@ public class DataAccessService implements IDataAccess {
         return data;
     }
 
+    /**
+     * Author : liuby
+     * Description : 分页查询，指定字段
+     * Date : Created in 2018/5/7 11:10
+     */
+    public <T extends SuperModel> Page queryByPage(Class<T> clazz, String[] selectFields, List<Condition> conditions, List<OrderBy> orderBys, int pn, int pz) throws BusinessException{
+        if (conditions == null) {
+            throw new BusinessException(ErrorCode.PARAM_REQUIRED, "查询条件为空", null);
+        }
+
+        Select select = Corm.select(clazz);
+        select.where(conditions);
+        if (selectFields != null) {
+            List<Field> fields = Lists.newArrayList();
+            for (String field : selectFields) {
+                fields.add(Field.of(field));
+            }
+            select.field(fields);
+        }
+        if (orderBys != null) {
+            select.orderBy(orderBys);
+        }
+        return select.pageable(pn, pz).page();
+    }
+
     @Override
     public <T extends SuperModel> List<T> queryByClause(Class<T> className, Condition... conditions) throws BusinessException {
         return cService.findList(className, parseCondition(conditions));
