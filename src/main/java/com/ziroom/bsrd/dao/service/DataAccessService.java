@@ -18,7 +18,9 @@ import com.ziroom.bsrd.dao.itf.IDataAccess;
 import com.ziroom.bsrd.dao.itf.IFillingDefault;
 import com.ziroom.bsrd.dao.itf.IValidate;
 import com.ziroom.bsrd.dao.mapper.BeanListRowMapper;
+import org.apache.commons.lang3.ArrayUtils;
 import org.apache.commons.lang3.StringUtils;
+import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.JdbcTemplate;
 
 import java.io.Serializable;
@@ -473,7 +475,7 @@ public class DataAccessService implements IDataAccess {
     }
 
     @Override
-    public <T> List<T> queryList(String sql, Class<T> clazz, Object... params) throws BusinessException {
+    public <T> List<T> queryList(String sql, Class<T> clazz, Object... params) {
 
         if (clazz.equals(Long.class)) {
             return jdbcTemplate.queryForList(sql, params, clazz);
@@ -488,12 +490,28 @@ public class DataAccessService implements IDataAccess {
     }
 
     @Override
-    public List<Map<String, Object>> queryList(String sql, Object... params) throws BusinessException {
+    public List<Map<String, Object>> queryList(String sql, Object... params) {
         return jdbcTemplate.queryForList(sql, params);
     }
 
     @Override
-    public <T> T queryOne(String sql, Class<T> clazz, Object... params) throws BusinessException {
+    public <T> List<T> query(String sql, Class<T> clazz, Object... params) {
+        if (ArrayUtils.isEmpty(params)) {
+            return jdbcTemplate.query(sql, new BeanPropertyRowMapper<>(clazz));
+        }
+        return jdbcTemplate.query(sql, new BeanPropertyRowMapper<>(clazz), params);
+    }
+
+    @Override
+    public <T> T queryForObject(String sql, Class<T> clazz, Object... params) {
+        if (ArrayUtils.isEmpty(params)) {
+            return jdbcTemplate.queryForObject(sql, clazz);
+        }
+        return jdbcTemplate.queryForObject(sql, clazz, params);
+    }
+
+    @Override
+    public <T> T queryOne(String sql, Class<T> clazz, Object... params) {
         List<T> data = queryList(sql, clazz, params);
         if (Predef.size(data) > 0) {
             return data.get(0);

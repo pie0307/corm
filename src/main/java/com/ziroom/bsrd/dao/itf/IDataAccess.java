@@ -91,12 +91,15 @@ public interface IDataAccess {
 
     Map<String, Object> queryOneMap(Class clazz, String[] selectFields, Condition... condition) throws BusinessException;
 
+    <T> List<T> queryList(String sql, Class<T> clazz, Object... params);
 
-    <T> List<T> queryList(String sql, Class<T> clazz, Object... params) throws BusinessException;
+    List<Map<String, Object>> queryList(String sql, Object... params);
 
-    List<Map<String, Object>> queryList(String sql, Object... params) throws BusinessException;
-
-    <T> T queryOne(String sql, Class<T> clazz, Object... params) throws BusinessException;
+    <T> T queryOne(String sql, Class<T> clazz, Object... params);
 
     int delete(Class clazz, Condition... condition);
+
+    <T> List<T> query(String sql, Class<T> clazz, Object... params);
+
+    <T> T queryForObject(String sql, Class<T> clazz, Object... params);
 }
