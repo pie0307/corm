@@ -182,8 +182,6 @@ public class DataAccessService implements IDataAccess {
 
     @Override
     public int[] update(List<? extends SuperModel> vos, String[] fields) throws BusinessException {
-        Preconditions.checkNotNull(fields, "更新字段不能为空");
-        Preconditions.checkNotNull(vos, "更新实体类不能为空");
         return update(vos.toArray(new SuperModel[vos.size()]), fields, true);
     }
 
@@ -245,20 +243,28 @@ public class DataAccessService implements IDataAccess {
 
     @Override
     public int update(Class<? extends SuperModel> className, String targetFile, Object targetValue, List<Condition> conditions) throws BusinessException {
+        return update(className, targetFile, targetValue, conditions, true);
+    }
+
+    @Override
+    public int update(Class<? extends SuperModel> className, String targetFile, Object targetValue, List<Condition> conditions, boolean isUpdateFlag) throws BusinessException {
         Preconditions.checkNotNull(conditions, "更新条件不能为空");
         Preconditions.checkNotNull(targetFile, "更新字段不能为空");
         Preconditions.checkNotNull(targetValue, "更新值不能为空");
         SuperModel superModel = new SuperModel();
-        if(fillingDefault!=null){
-            filling(IFillingDefault.UPDATE, superModel);
-        }
+
         AppointUpdate<? extends SuperModel> appointUpdate = Corm.update(className)
                 .field(Field.of(targetFile), targetValue);
 
-        if (superModel instanceof SuperModel) {
-            appointUpdate = appointUpdate.field(Field.of("lastModifyCode"), superModel.getLastModifyCode());
-            appointUpdate = appointUpdate.field(Field.of("lastModifyName"), superModel.getLastModifyName());
-            appointUpdate = appointUpdate.field(Field.of("lastModifyTime"), superModel.getLastModifyTime());
+        if (isUpdateFlag){
+            if(fillingDefault!=null){
+                filling(IFillingDefault.UPDATE, superModel);
+            }
+            if (superModel instanceof SuperModel) {
+                appointUpdate = appointUpdate.field(Field.of("lastModifyCode"), superModel.getLastModifyCode());
+                appointUpdate = appointUpdate.field(Field.of("lastModifyName"), superModel.getLastModifyName());
+                appointUpdate = appointUpdate.field(Field.of("lastModifyTime"), superModel.getLastModifyTime());
+            }
         }
 
         appointUpdate.where(conditions);
@@ -267,21 +273,29 @@ public class DataAccessService implements IDataAccess {
 
     @Override
     public int update(Class<? extends SuperModel> className, String[] targetFields, Object[] targetValues, List<Condition> conditions) throws BusinessException {
+        return update(className, targetFields, targetValues, conditions, true);
+    }
+
+    @Override
+    public int update(Class<? extends SuperModel> className, String[] targetFields, Object[] targetValues, List<Condition> conditions, boolean isUpdateFlag) throws BusinessException {
         Preconditions.checkNotNull(conditions, "更新条件不能为空");
         Preconditions.checkNotNull(targetFields, "更新字段不能为空");
         Preconditions.checkNotNull(targetValues, "更新值不能为空");
         Preconditions.checkArgument(targetFields.length == targetValues.length, "字段个数和值个数不一致");
         SuperModel superModel = new SuperModel();
-        if(fillingDefault!=null){
-            filling(IFillingDefault.UPDATE, superModel);
-        }
+
         AppointUpdate<? extends SuperModel> appointUpdate = Corm.update(className)
                 .field(Field.of("isDel"), superModel.getIsDel());
 
-        if (superModel instanceof SuperModel) {
-            appointUpdate = appointUpdate.field(Field.of("lastModifyCode"), superModel.getLastModifyCode());
-            appointUpdate = appointUpdate.field(Field.of("lastModifyName"), superModel.getLastModifyName());
-            appointUpdate = appointUpdate.field(Field.of("lastModifyTime"), superModel.getLastModifyTime());
+        if (isUpdateFlag){
+            if(fillingDefault!=null){
+                filling(IFillingDefault.UPDATE, superModel);
+            }
+            if (superModel instanceof SuperModel) {
+                appointUpdate = appointUpdate.field(Field.of("lastModifyCode"), superModel.getLastModifyCode());
+                appointUpdate = appointUpdate.field(Field.of("lastModifyName"), superModel.getLastModifyName());
+                appointUpdate = appointUpdate.field(Field.of("lastModifyTime"), superModel.getLastModifyTime());
+            }
         }
 
         for (int i = 0; i < targetFields.length; i++) {
@@ -407,6 +421,7 @@ public class DataAccessService implements IDataAccess {
         if (orderBys != null) {
             select.orderBy(orderBys);
         }
+        select.getParam().setResultType(clazz);
         return select.pageable(pn, pz).page();
     }
 

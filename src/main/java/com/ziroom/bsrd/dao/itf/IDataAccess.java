@@ -44,10 +44,13 @@ public interface IDataAccess {
 
     int update(Class<? extends SuperModel> className, String targetFile, Object targetValue, List<Condition> conditions) throws BusinessException;
 
+    int update(Class<? extends SuperModel> className, String targetFile, Object targetValue, List<Condition> conditions, boolean isUpdateFlag) throws BusinessException;
+
     int update(String sql, Object... params) throws BusinessException;
 
     int update(Class<? extends SuperModel> className, String[] targetFields, Object[] targetValues, List<Condition> conditions) throws BusinessException;
 
+    int update(Class<? extends SuperModel> className, String[] targetFields, Object[] targetValues, List<Condition> conditions, boolean isUpdateFlag) throws BusinessException;
 
     <T extends SuperModel> T queryByPK(Class<T> className, Serializable pk) throws BusinessException;
 
