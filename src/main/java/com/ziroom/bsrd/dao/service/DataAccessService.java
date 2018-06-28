@@ -510,7 +510,7 @@ public class DataAccessService implements IDataAccess {
      * Date : Created in 2018/6/28 14:50
      */
     public <T> Page queryByPage(String sql, Class<T> clazz, int pn, int pz, Object... params) {
-        int totalNum = this.queryForObject(getSQLCount(sql), Integer.class);
+        int totalNum = this.queryForObject(getSQLCount(sql), Integer.class, params);
         if (totalNum == 0) {
             return new Page<>(Lists.newArrayList(), 0, pn, pz);
         }
@@ -527,10 +527,10 @@ public class DataAccessService implements IDataAccess {
         return paginationSQL.toString();
     }
 
-    private String getSQLCount(String sql){
+    private String getSQLCount(String sql) {
         String sqlBak = sql.toLowerCase();
         String searchValue = " from ";
-        return "select count(*) from "+ sql.substring(sqlBak.indexOf(searchValue)+searchValue.length(), sqlBak.length());
+        return "select count(*) from " + sql.substring(sqlBak.indexOf(searchValue) + searchValue.length(), sqlBak.length());
     }
 
     @Override
