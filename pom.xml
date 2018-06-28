@@ -12,7 +12,7 @@
 
     <groupId>com.ziroom.bsrd</groupId>
     <artifactId>jdbc-spring-boot-starter</artifactId>
-    <version>1.0.8-SNAPSHOT</version>
+    <version>1.0.9-SNAPSHOT</version>
     <packaging>jar</packaging>
 
     <name>jdbc-spring-boot-starter</name>
@@ -22,7 +22,7 @@
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <corm.version>2.0.0</corm.version>
         <mysql-connector-java.version>5.1.34</mysql-connector-java.version>
-        <lib-all.version>1.0.0-SNAPSHOT</lib-all.version>
+        <lib-all.version>1.0.5-SNAPSHOT</lib-all.version>
     </properties>
 
     <dependencyManagement>

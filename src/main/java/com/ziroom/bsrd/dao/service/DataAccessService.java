@@ -504,6 +504,35 @@ public class DataAccessService implements IDataAccess {
         return jdbcTemplate.queryForObject(sql, new BeanListRowMapper<>(clazz), params);
     }
 
+    /**
+     * Author : liuby
+     * Description : jdbcTemplate分页查询，只支持mysql
+     * Date : Created in 2018/6/28 14:50
+     */
+    public <T> Page queryByPage(String sql, Class<T> clazz, int pn, int pz, Object... params) {
+        int totalNum = this.queryForObject(getSQLCount(sql), Integer.class);
+        if (totalNum == 0) {
+            return new Page<>(Lists.newArrayList(), 0, pn, pz);
+        }
+
+        List<T> ret = this.query(getSQLLimit(sql, pn, pz), clazz, params);
+        return new Page<>(ret, totalNum, pn, pz);
+    }
+
+    private String getSQLLimit(String sql, int pn, int pz) {
+        int startIndex = (pz - 1) * pn;
+        StringBuilder paginationSQL = new StringBuilder(" ");
+        paginationSQL.append(sql);
+        paginationSQL.append(" limit ").append(startIndex).append(",").append(pn);
+        return paginationSQL.toString();
+    }
+
+    private String getSQLCount(String sql){
+        String sqlBak = sql.toLowerCase();
+        String searchValue = " from ";
+        return "select count(*) from "+ sql.substring(sqlBak.indexOf(searchValue)+searchValue.length(), sqlBak.length());
+    }
+
     @Override
     public List<Map<String, Object>> queryList(String sql, Object... params) {
         return jdbcTemplate.queryForList(sql, params);

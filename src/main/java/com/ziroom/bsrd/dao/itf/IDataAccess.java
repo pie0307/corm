@@ -105,4 +105,6 @@ public interface IDataAccess {
     <T> List<T> query(String sql, Class<T> clazz, Object... params);
 
     <T> T queryForObject(String sql, Class<T> clazz, Object... params);
+
+    <T> Page queryByPage(String sql, Class<T> clazz, int pn, int pz, Object... params);
 }
