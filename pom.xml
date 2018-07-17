@@ -12,7 +12,7 @@
 
     <groupId>com.ziroom.bsrd</groupId>
     <artifactId>jdbc-spring-boot-starter</artifactId>
-    <version>1.0.10-SNAPSHOT</version>
+    <version>1.1.0-SNAPSHOT</version>
     <packaging>jar</packaging>
 
     <name>jdbc-spring-boot-starter</name>
@@ -66,7 +66,18 @@
             <artifactId>mybatis-spring</artifactId>
             <version>1.3.1</version>
         </dependency>
-
+        <!-- platform-tesla -->
+        <dependency>
+            <groupId>com.ziroom.platform.tesla</groupId>
+            <artifactId>tesla-druid</artifactId>
+            <version>1.0.1-RELEASE</version>
+        </dependency>
+        <!-- platform-cat -->
+        <dependency>
+            <groupId>com.dianping.cat</groupId>
+            <artifactId>cat-client</artifactId>
+            <version>1.3.7-RELEASE</version>
+        </dependency>
         <dependency>
             <groupId>com.alibaba</groupId>
             <artifactId>druid</artifactId>

@@ -520,10 +520,10 @@ public class DataAccessService implements IDataAccess {
     }
 
     private String getSQLLimit(String sql, int pn, int pz) {
-        int startIndex = (pz - 1) * pn;
+        int startIndex = (pn - 1) * pz;
         StringBuilder paginationSQL = new StringBuilder(" ");
         paginationSQL.append(sql);
-        paginationSQL.append(" limit ").append(startIndex).append(",").append(pn);
+        paginationSQL.append(" limit ").append(startIndex).append(",").append(pz);
         return paginationSQL.toString();
     }
 
