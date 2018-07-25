@@ -1,0 +1,17 @@
+###################  项目启动端口  ###################
+server:
+  port: 81
+###################  spring配置  ###################
+spring:
+  profiles:
+    active: TEST
+  datasource:
+    #driverClassName: oracle.jdbc.driver.OracleDriver
+    #url: jdbc:oracle:thin:@ 10.16.36.33:1521:resb
+    #validationQuery: SELECT 1 FROM DUAL
+    domian: localhost:3306
+    databaseName: test
+    username: root
+    password: root
+
+logging.level.pro.pie.me.corm.mapper: debug
