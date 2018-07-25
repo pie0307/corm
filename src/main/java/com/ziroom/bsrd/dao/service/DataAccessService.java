@@ -404,7 +404,7 @@ public class DataAccessService implements IDataAccess {
      * Description : 分页查询，指定字段
      * Date : Created in 2018/5/7 11:10
      */
-    public <T extends SuperModel> Page queryByPage(Class<T> clazz, String[] selectFields, List<Condition> conditions, List<OrderBy> orderBys, int pn, int pz) throws BusinessException{
+    public <T extends SuperModel> Page<T> queryByPage(Class<T> clazz, String[] selectFields, List<Condition> conditions, List<OrderBy> orderBys, int pn, int pz) throws BusinessException{
         if (conditions == null) {
             throw new BusinessException(ErrorCode.PARAM_REQUIRED, "查询条件为空", null);
         }
@@ -509,7 +509,7 @@ public class DataAccessService implements IDataAccess {
      * Description : jdbcTemplate分页查询，只支持mysql
      * Date : Created in 2018/6/28 14:50
      */
-    public <T> Page queryByPage(String sql, Class<T> clazz, int pn, int pz, Object... params) {
+    public <T> Page<T> queryByPage(String sql, Class<T> clazz, int pn, int pz, Object... params) {
         int totalNum = this.queryForObject(getSQLCount(sql), Integer.class, params);
         if (totalNum == 0) {
             return new Page<>(Lists.newArrayList(), 0, pn, pz);
