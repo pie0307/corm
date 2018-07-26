@@ -1,4 +1,4 @@
-package pro.pie.me.dao.configuration;
+package pro.pie.me.dao.service;
 
 import pro.pie.me.exception.BusinessException;
 import pro.pie.me.exception.ErrorCode;

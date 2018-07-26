@@ -1,4 +1,4 @@
-package pro.pie.me.dao.configuration;
+package pro.pie.me.dao.service;
 
 import org.apache.commons.lang3.StringUtils;
 import pro.pie.me.common.ApplicationEnvironment;

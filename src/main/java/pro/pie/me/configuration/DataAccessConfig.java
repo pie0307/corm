@@ -1,10 +1,12 @@
-package pro.pie.me.dao.configuration;
+package pro.pie.me.configuration;
 
 import pro.pie.me.constant.DialectEnum;
 import pro.pie.me.corm.CService;
 import pro.pie.me.corm.CormConfig;
 import pro.pie.me.corm.mapper.CMapper;
 import pro.pie.me.corm.plugins.SkipInterceptor;
+import pro.pie.me.dao.service.DefaultFilling;
+import pro.pie.me.dao.service.ValidatorPlug;
 import pro.pie.me.dao.datasource.DruidProperties;
 import pro.pie.me.dao.itf.IDataAccess;
 import pro.pie.me.dao.itf.IFillingDefault;
