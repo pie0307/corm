@@ -22,12 +22,28 @@ spring.datasource.databaseName=数据库名
 spring.datasource.username=用户
 spring.datasource.password=密码
 或者
+
+oracle
 spring:
   datasource:
-  domian: ip:端口
-  databaseName: 数据库名
-  username: 用户
-  password: 密码
+    driverClassName: oracle.jdbc.driver.OracleDriver
+    domian: 10.16.36.33:1521
+    databaseName: resb
+    username: hdic
+    password: oracle
+    validationQuery: SELECT 1 FROM DUAL
+    dialect: oracle
+    
+mysql
+spring:
+  datasource:
+    driverClassName: com.mysql.jdbc.Driver
+    domian: 10.16.16.13:3306
+    databaseName: resb
+    username: bsrd
+    password: db
+    validationQuery: SELECT x
+    dialect: mysql
  ```
 
  ## 如果使用

@@ -89,4 +89,13 @@ public interface CMapper {
      */
     @SelectProvider(type = CSqlBuilder.class, method = "selectSum")
     Map<String, Object> selectSum(@Param("param") SelectParam param);
+
+    /**
+     * 获取序列id
+     *
+     * @param seq 序列
+     * @return 序列id
+     */
+    @SelectProvider(type = CSqlBuilder.class, method = "selectSeq")
+    long selectSeq(@Param("param") String seq);
 }

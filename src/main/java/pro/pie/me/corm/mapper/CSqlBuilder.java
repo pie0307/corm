@@ -1,5 +1,6 @@
 package pro.pie.me.corm.mapper;
 
+import com.google.common.collect.Lists;
 import pro.pie.me.corm.d.DeleteParam;
 import pro.pie.me.corm.model.IdEntity;
 import pro.pie.me.corm.r.SelectParam;
@@ -108,6 +109,14 @@ public class CSqlBuilder {
         if (param.getConditionList() != null) {
             where(param.getConditionList());
         }
+        return SQL();
+    }
+
+    public String selectSeq(Map<String, Object> parameter) {
+        String seq = (String) parameter.get("param");
+        BEGIN();
+        selectSeqX(seq);
+        FORM(Lists.newArrayList("dual"));
         return SQL();
     }
 }

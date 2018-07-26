@@ -44,13 +44,9 @@ public interface IDataAccess {
 
     int update(Class<? extends SuperModel> className, String targetFile, Object targetValue, List<Condition> conditions, boolean isUpdateFlag) throws BusinessException;
 
-    int update(String sql, Object... params) throws BusinessException;
-
     int update(Class<? extends SuperModel> className, String[] targetFields, Object[] targetValues, List<Condition> conditions) throws BusinessException;
 
     int update(Class<? extends SuperModel> className, String[] targetFields, Object[] targetValues, List<Condition> conditions, boolean isUpdateFlag) throws BusinessException;
-
-    <T extends SuperModel> T queryByPK(Class<T> className, Serializable pk) throws BusinessException;
 
     <T extends SuperModel> T queryById(Class<T> className, long pk) throws BusinessException;
 
@@ -92,11 +88,7 @@ public interface IDataAccess {
 
     Map<String, Object> queryOneMap(Class clazz, String[] selectFields, Condition... condition) throws BusinessException;
 
-    <T> List<T> queryList(String sql, Class<T> clazz, Object... params);
-
     List<Map<String, Object>> queryList(String sql, Object... params);
-
-    <T> T queryOne(String sql, Class<T> clazz, Object... params);
 
     int delete(Class clazz, Condition... condition);
 

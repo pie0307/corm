@@ -1,9 +1,11 @@
 package pro.pie.me.dao.configuration;
 
+import pro.pie.me.constant.DialectEnum;
 import pro.pie.me.corm.CService;
 import pro.pie.me.corm.CormConfig;
 import pro.pie.me.corm.mapper.CMapper;
 import pro.pie.me.corm.plugins.SkipInterceptor;
+import pro.pie.me.dao.datasource.DruidProperties;
 import pro.pie.me.dao.itf.IDataAccess;
 import pro.pie.me.dao.itf.IFillingDefault;
 import pro.pie.me.dao.itf.IValidate;
@@ -12,7 +14,6 @@ import org.apache.ibatis.plugin.Interceptor;
 import org.apache.ibatis.session.SqlSessionFactory;
 import org.mybatis.spring.SqlSessionFactoryBean;
 import org.mybatis.spring.mapper.MapperFactoryBean;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.io.DefaultResourceLoader;
@@ -21,6 +22,7 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.datasource.DataSourceTransactionManager;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
 
+import javax.annotation.Resource;
 import javax.sql.DataSource;
 
 /**
@@ -29,18 +31,21 @@ import javax.sql.DataSource;
 @Configuration
 @EnableTransactionManagement
 public class DataAccessConfig {
-    @Autowired
+    @Resource
     private DataSource dataSource;
-    @Autowired
+    @Resource
     private JdbcTemplate jdbcTemplate;
+    @Resource
+    private DruidProperties druidProperties;
 
     private ResourceLoader resourceLoader = new DefaultResourceLoader();
-
 
     //配置翻页插件
     @Bean
     public Interceptor[] interceptors() {
-        return new Interceptor[]{new SkipInterceptor()};
+        SkipInterceptor skipInterceptor = new SkipInterceptor();
+        skipInterceptor.setDialect(druidProperties.getDialect());
+        return new Interceptor[]{skipInterceptor};
     }
 
     private SqlSessionFactory createSqlSessionFactory(DataSource dataSource) throws Exception {
@@ -80,7 +85,8 @@ public class DataAccessConfig {
 
     @Bean
     public CService cService() throws Exception {
-        CService cService = new CService(masterCMapper().getObject());
+        DialectEnum dialectEnum = DialectEnum.getDialectEnum(druidProperties.getDialect());
+        CService cService = new CService(masterCMapper().getObject(), dialectEnum);
         return cService;
     }
 
@@ -92,7 +98,7 @@ public class DataAccessConfig {
 
     @Bean
     public IFillingDefault fillingDefault() throws Exception {
-        IFillingDefault fillingDefault = new DefaultFilling();
+        IFillingDefault fillingDefault = new DefaultFilling(false);
         return fillingDefault;
     }
 

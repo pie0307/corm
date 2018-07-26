@@ -19,7 +19,7 @@ import org.springframework.stereotype.Component;
 @Setter
 public class DruidProperties {
 
-    private String type = "mysql";
+    private String dialect = "mysql";
 
     private String domian = "";
 
@@ -61,10 +61,13 @@ public class DruidProperties {
 
     public void config(DruidDataSource dataSource) throws Exception {
 
-        if ("mysql".equals(type)) {
+        if ("mysql".equals(dialect)) {
             if (StringUtils.isBlank(url)) {
                 url = "jdbc:mysql://" + domian + "/" + databaseName + "?useUnicode=true&characterEncoding=utf8&zeroDateTimeBehavior=convertToNull";
             }
+        }
+        if ("oracle".equals(dialect)) {
+            url = "jdbc:oracle:thin:@ " + domian + ":" + databaseName;
         }
 
         dataSource.setUrl(url);

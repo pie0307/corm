@@ -11,7 +11,6 @@ import pro.pie.me.corm.u.Update;
 import pro.pie.me.dao.itf.IDataAccess;
 import pro.pie.me.dao.itf.IFillingDefault;
 import pro.pie.me.dao.itf.IValidate;
-import pro.pie.me.dao.mapper.BeanListRowMapper;
 import pro.pie.me.exception.BusinessException;
 import pro.pie.me.exception.DaoException;
 import pro.pie.me.exception.ErrorCode;
@@ -303,17 +302,6 @@ public class DataAccessService implements IDataAccess {
     }
 
     @Override
-    public int update(String sql, Object... params) throws BusinessException {
-        throw new RuntimeException("not impl");
-    }
-
-    @Override
-    public <T extends SuperModel> T queryByPK(Class<T> className, Serializable pk) throws BusinessException {
-        Preconditions.checkNotNull(pk, "主键不能为空");
-        return cService.find(className, (Long) pk);
-    }
-
-    @Override
     public <T extends SuperModel> T queryById(Class<T> className, long pk) throws BusinessException {
         Preconditions.checkNotNull(pk, "主键不能为空");
         return cService.find(className, pk);
@@ -486,21 +474,6 @@ public class DataAccessService implements IDataAccess {
         return null;
     }
 
-    @Override
-    public <T> List<T> queryList(String sql, Class<T> clazz, Object... params) {
-
-        if (clazz.equals(Long.class)) {
-            return jdbcTemplate.queryForList(sql, params, clazz);
-        }
-        if (clazz.equals(Integer.class)) {
-            return jdbcTemplate.queryForList(sql, params, clazz);
-        }
-        if (clazz.equals(String.class)) {
-            return jdbcTemplate.queryForList(sql, params, clazz);
-        }
-        return jdbcTemplate.queryForObject(sql, new BeanListRowMapper<>(clazz), params);
-    }
-
     /**
      * Author : liuby
      * Description : jdbcTemplate分页查询，只支持mysql
@@ -549,15 +522,6 @@ public class DataAccessService implements IDataAccess {
             return jdbcTemplate.queryForObject(sql, clazz);
         }
         return jdbcTemplate.queryForObject(sql, clazz, params);
-    }
-
-    @Override
-    public <T> T queryOne(String sql, Class<T> clazz, Object... params) {
-        List<T> data = queryList(sql, clazz, params);
-        if (Predef.size(data) > 0) {
-            return data.get(0);
-        }
-        return null;
     }
 
     @Override

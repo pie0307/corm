@@ -1,5 +1,7 @@
 package pro.pie.me.corm;
 
+import pro.pie.me.constant.DialectEnum;
+import pro.pie.me.corm.annotation.Table;
 import pro.pie.me.corm.mapper.CMapper;
 import pro.pie.me.corm.r.Select;
 import pro.pie.me.corm.r.SumOpt;
@@ -14,10 +16,20 @@ import java.util.List;
 @SuppressWarnings("unchecked")
 public class CService {
 
+    private DialectEnum dialectEnum;
+
     private CMapper mapper;
+
+    public CService() {
+    }
 
     public CService(CMapper mapper) {
         this.mapper = mapper;
+    }
+
+    public CService(CMapper mapper, DialectEnum dialectEnum) {
+        this.mapper = mapper;
+        this.dialectEnum = dialectEnum;
     }
 
     /**
@@ -27,6 +39,14 @@ public class CService {
      * @return int
      */
     public <T extends IdEntity> int save(T entity) {
+        if (DialectEnum.ORACLE.equals(dialectEnum)) {
+            Class<? extends IdEntity> entityClass = entity.getClass();
+            Table table = entityClass.getAnnotation(Table.class);
+            long id = mapper.selectSeq(table.comment());
+            entity.setId(id);
+            return mapper.insert(entity);
+        }
+
         return Corm.switchM(mapper).insert((Class<IdEntity>) entity.getClass()).incId().obj(entity);
     }
 

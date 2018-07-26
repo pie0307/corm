@@ -151,6 +151,11 @@ public class SqlBuilderUtil {
         sql.SELECT("count(*)");
     }
 
+    static void selectSeqX(String seq) {
+        SQL sql = localSQL.get();
+        sql.SELECT(seq + ".NEXTVAL");
+    }
+
     static void selectSumX(Set<Field> fields) {
         SQL sql = localSQL.get();
         for (Field field : fields) {

@@ -4,8 +4,6 @@
         "http://ibatis.apache.org/dtd/ibatis-3-config.dtd">
 <configuration>
     <properties>
-        <!-- 数据库方言设置目前只支持mysql和oracle，mysql为默认配置可以不写 -->
-        <property name="dialect" value="mysql"/>
         <!-- 翻页插件sqlid过滤正则，目前不支持修改 -->
         <property name="pageSqlId" value=".*Page$"/>
     </properties>

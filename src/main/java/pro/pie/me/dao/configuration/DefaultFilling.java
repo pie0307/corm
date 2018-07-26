@@ -11,10 +11,15 @@ import java.util.Date;
 
 public class DefaultFilling implements IFillingDefault {
 
+    private Boolean isFilling;
+
+    public DefaultFilling(Boolean isFilling) {
+        this.isFilling = isFilling;
+    }
 
     @Override
     public void filling(String type, SuperModel superModel) {
-        if (superModel instanceof SuperModel) {
+        if (isFilling) {
             if (INSERT.equals(type)) {
                 superModel.setCreateCode(ApplicationEnvironment.getEmpCode());
                 superModel.setCreateName(ApplicationEnvironment.getUserName());
@@ -41,6 +46,5 @@ public class DefaultFilling implements IFillingDefault {
                 superModel.setCityCode(ApplicationEnvironment.getCityCode());
             }
         }
-
     }
 }

@@ -32,7 +32,16 @@ public class SkipInterceptor implements Interceptor {
     /**
      * 数据库类型(默认为mysql)
      */
-    private static final String DEFAULT_DIALECT = "mysql";
+    private String dialect = "mysql";
+
+    public String getDialect() {
+        return dialect;
+    }
+
+    public void setDialect(String dialect) {
+        this.dialect = dialect;
+    }
+
     /**
      * 需要拦截的ID(正则匹配)
      */
@@ -59,17 +68,10 @@ public class SkipInterceptor implements Interceptor {
         Configuration configuration = (Configuration) metaStatementHandler.
                 getValue("delegate.configuration");
         Properties variables = configuration.getVariables();
-        // 数据库类型(默认为mysql)
-        String dialect = "";
         // 需要拦截的ID(正则匹配)
         String pageSqlId = "";
         if (variables != null) {
-            dialect = variables.getProperty("dialect");
             pageSqlId = variables.getProperty("pageSqlId");
-        }
-        if (null == dialect || "".equals(dialect)) {
-            logger.debug("Property dialect is not setted,use default 'mysql' ");
-            dialect = DEFAULT_DIALECT;
         }
         if (null == pageSqlId || "".equals(pageSqlId)) {
             logger.debug("Property pageSqlId is not setted,use default '.*Page$' ");
