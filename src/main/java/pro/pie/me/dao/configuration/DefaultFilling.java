@@ -1,11 +1,11 @@
 package pro.pie.me.dao.configuration;
 
+import org.apache.commons.lang3.StringUtils;
 import pro.pie.me.common.ApplicationEnvironment;
-import pro.pie.me.exception.BusinessException;
-import pro.pie.me.exception.ErrorCode;
 import pro.pie.me.corm.model.SuperModel;
 import pro.pie.me.dao.itf.IFillingDefault;
-import org.apache.commons.lang3.StringUtils;
+import pro.pie.me.exception.BusinessException;
+import pro.pie.me.exception.ErrorCode;
 
 import java.util.Date;
 
@@ -42,9 +42,6 @@ public class DefaultFilling implements IFillingDefault {
             }
         } else {
             superModel.setIsDel(0);
-            if (StringUtils.isBlank(superModel.getCityCode())) {
-                superModel.setCityCode(ApplicationEnvironment.getCityCode());
-            }
         }
     }
 }
