@@ -13,4 +13,5 @@ import java.lang.annotation.*;
 @Documented
 @Transactional(rollbackFor = Exception.class)
 public @interface ZTransactional {
+
 }
